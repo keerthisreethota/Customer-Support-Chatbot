@@ -7,9 +7,9 @@ from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
 from azure.core.credentials import AzureKeyCredential
 
-# ===============================
-# 🔹 Load environment variables
-# ===============================
+
+# Load environment variables
+
 load_dotenv()
 
 AZURE_SEARCH_ENDPOINT = os.getenv("AZURE_SEARCH_ENDPOINT")
@@ -31,9 +31,8 @@ search_client = SearchClient(
     credential=AzureKeyCredential(AZURE_SEARCH_KEY)
 )
 
-# ===============================
-# 🔹 FastAPI Setup
-# ===============================
+#  FastAPI Setup
+
 app = FastAPI(title="Customer Support Chatbot", docs_url="/") # docs_url="/" is the new path for Swagger UI
 
 class QueryRequest(BaseModel):
@@ -44,9 +43,8 @@ class QueryResponse(BaseModel):
     answer: str
     sources: list
 
-# ===============================
-# 🔹 Helper Functions
-# ===============================
+#  Helper Functions
+
 def generate_embedding(text: str):
     """Generate embedding using Azure AI Foundry REST API."""
     headers = {
@@ -117,9 +115,9 @@ def generate_answer(query: str, docs: list):
     data = response.json()
     return data["choices"][0]["message"]["content"].strip()
 
-# ===============================
-# 🔹 FastAPI Endpoints
-# ===============================
+
+#  FastAPI Endpoints
+
 @app.post("/chat", response_model=QueryResponse)
 async def chat(request: QueryRequest):
     try:
